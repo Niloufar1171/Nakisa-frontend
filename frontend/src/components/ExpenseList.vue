@@ -4,7 +4,7 @@
     <expense-form @expense-added="fetchExpenses" />
     <ul>
       <li v-for="expense in expenses" :key="expense.id">
-        {{ expense.description }} - {{ expense.amount }} - {{ expense.date }}
+        {{ expense.category }} - {{ expense.amount }} - {{ expense.date }}
         <button @click="deleteExpense(expense.id)">Delete</button>
       </li>
     </ul>

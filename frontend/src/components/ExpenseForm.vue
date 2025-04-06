@@ -3,7 +3,7 @@
     <!-- Add Expense Form -->
     <h3>Add Expense</h3>
     <form @submit.prevent="addExpense">
-      <input v-model="description" placeholder="Description" required />
+      <input v-model="category" placeholder="category" required />
       <input v-model="amount" type="number" placeholder="Amount" required />
       <input v-model="date" type="date" required />
       <button type="submit" :disabled="isLoading">Add</button>
@@ -15,8 +15,8 @@
 
     <!-- Filters Section -->
     <div class="filters">
-      <label for="description">Description:</label>
-      <input v-model="filters.description" id="description" type="text" placeholder="Enter description">
+      <label for="category">category:</label>
+      <input v-model="filters.category" id="description" type="text" placeholder="Enter category">
 
       <label for="startDate">Start Date:</label>
       <input v-model="filters.startDate" id="startDate" type="date">
@@ -59,11 +59,11 @@ export default {
       size: 10,
       totalPages: 0,
       expenses: [],
-      description: '',
+      category: '',
       amount: 0,
       date: '',
       filters: {
-        description: '',
+        category: '',
         startDate: '',
         endDate: '',
         minAmount: null,
@@ -74,13 +74,13 @@ export default {
   methods: {
     // Fetch expenses from the backend with the selected filters
     getExpenses() {
-      const { description, startDate, endDate, minAmount, maxAmount } = this.filters;
+      const { category, startDate, endDate, minAmount, maxAmount } = this.filters;
       const formattedStartDate = startDate ? startDate : null;
       const formattedEndDate = endDate ? endDate : null;
       axios
         .get('http://localhost:8080/api/expenses/filters', {
           params: {
-            description: description || null,
+            category: category || null,
             startDate: startDate || null,
             endDate: endDate || null,
             minAmount: minAmount || null,
@@ -111,7 +111,7 @@ export default {
     addExpense() {
       const auth = localStorage.getItem('auth');
       axios.post('http://localhost:8080/api/expenses', {
-        description: this.description,
+        category: this.category,
         amount: this.amount,
         date: this.date
       }, {
@@ -121,7 +121,7 @@ export default {
         // Refresh expenses after adding a new one
         this.getExpenses();
 
-        this.description = '';
+        this.category = '';
         this.amount = 0;
         this.date = '';
       })
