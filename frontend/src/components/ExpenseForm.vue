@@ -7,6 +7,7 @@
       <input v-model="amount" type="number" placeholder="Amount" required />
       <input v-model="date" type="date" required />
       <button type="submit">Add</button>
+      <div v-if="errorMessage" class="error">{{ errorMessage }}</div>
     </form>
 
     <!-- Filters Form -->
@@ -35,6 +36,7 @@ export default {
       category: '',
       amount: 0,
       date: '',
+      errorMessage: '',
       filters: {
         startDate: '',
         endDate: '',
@@ -59,8 +61,15 @@ export default {
         this.category = '';
         this.amount = 0;
         this.date = '';
+        this.errorMessage = '';
       })
-      .catch(error => console.error(error));
+      .catch(error => {
+        if (error.response && error.response.data && error.response.data.message) {
+          this.errorMessage = error.response.data.message;
+        } else {
+          this.errorMessage = 'An error occurred while adding the expense.';
+        }
+      });
     },
 
     applyFilters() {
@@ -82,3 +91,9 @@ export default {
   }
 };
 </script>
+<style>
+.error {
+  color: red;
+  margin-top: 10px;
+}
+</style>
