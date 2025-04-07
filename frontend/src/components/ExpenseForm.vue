@@ -1,7 +1,8 @@
 <template>
   <div>
-    <h2>Add Expense</h2>
+    <h4>Add Expense</h4>
     <form @submit.prevent="addExpense">
+      
       <input v-model="category" placeholder="category" required />
       <input v-model="amount" type="number" placeholder="Amount" required />
       <input v-model="date" type="date" required />
@@ -9,7 +10,7 @@
     </form>
 
     <!-- Filters Form -->
-    <h3>Filter Expenses</h3>
+    <h4>Filter Expenses</h4>
     <form @submit.prevent="applyFilters">
       <input type="date" v-model="filters.startDate" placeholder="Start Date" />
       <input type="date" v-model="filters.endDate" placeholder="End Date" />

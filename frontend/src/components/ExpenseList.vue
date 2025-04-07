@@ -1,11 +1,8 @@
 <template>
   <div>
     <h2>Expenses</h2>
-
-    <!-- Include the Expense Form (where you add expenses) -->
     <expense-form @expense-added="fetchExpenses" @filters-applied="applyFilters" />
 
-    <!-- Loader (Show when data is loading) -->
     <div v-if="isLoading">Loading...</div>
 
     <!-- Display List of Expenses -->
@@ -65,15 +62,20 @@ export default {
 
     // Called when filters are applied (through event)
     applyFilters(filters) {
-      this.isLoading = true; // Show loader when fetching filtered results
+      this.isLoading = true; 
       const auth = localStorage.getItem('auth');
+      const params = {
+        category: filters.category || '', 
+        startDate: filters.startDate ? new Date(filters.startDate).toISOString().split('T')[0] : '', // Format date
+        endDate: filters.endDate ? new Date(filters.endDate).toISOString().split('T')[0] : '', // Format date
+        minAmount: filters.minAmount || '',
+        maxAmount: filters.maxAmount || '',
+        page: 0,
+        size: 10
+      };
       axios.get('http://localhost:8080/api/expenses/filters', {
         headers: { 'Authorization': `Basic ${auth}` },
-        params: {
-          ...filters,
-          page: 0,
-          size: 10
-        }
+        params
       })
       .then(response => {
         this.expenses = response.data.content || response.data;
